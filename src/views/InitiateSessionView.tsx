@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { validateSession } from '../api';
 import { Button, PinCharacter } from '../components';
 
 import asteriskIcon from '../assets/asterisk.svg';
@@ -14,6 +15,19 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({
 
   const handlePinClear = (): void => {
     setPin('');
+  };
+
+  const handleValidateSession = async (): Promise<void> => {
+    validateSession(pin)
+      .then((res) => {
+        handleAccountPin(pin);
+        // TODO noti?
+      })
+      .catch((err) => {
+        console.log('err', err.message);
+        // TODO - set a noti
+        handlePinClear();
+      });
   };
 
   useEffect(() => {
@@ -69,7 +83,7 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({
         <Button
           disabled={false}
           displayText='Submit'
-          handleClick={() => handleAccountPin(pin)}
+          handleClick={handleValidateSession}
         />
       </div>
     </div>
