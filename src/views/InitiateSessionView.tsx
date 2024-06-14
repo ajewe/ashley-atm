@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button, PinCharacter } from '../components';
 
+import asteriskIcon from '../assets/asterisk.svg';
+
 type InitiateSessionViewProps = {};
 
 export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
@@ -28,6 +30,8 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
           return prevStateArr.join('');
         });
       }
+
+      // TODO - add enter
     };
 
     document.addEventListener('keydown', handleKeyDownEvent);
@@ -40,20 +44,20 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
   return (
     // TODO : screen reader?
     <div className='flex flex-col items-center w-3/5 min-w-72 py-12 gap-8 bg-purple-50'>
-      <div className='w-1/2 flex bg-slate-200 min-w-60'>
+      <div className='h-24 w-1/2 flex bg-slate-200 min-w-60'>
         {pin.split('').map((char, i) => {
-          return <PinCharacter key={`pin-${char}-${i}`}>*</PinCharacter>;
+          return (
+            <PinCharacter key={`pin-${char}-${i}`}>
+              <img src={asteriskIcon} className='h-1/2' />
+            </PinCharacter>
+          );
         })}
-        {pin.length < 4 ? (
-          <PinCharacter>
-            <div className='text-6xl'>_</div>
-          </PinCharacter>
-        ) : null}
+        {pin.length < 4 ? <PinCharacter>_</PinCharacter> : null}
       </div>
       <div className='w-full flex p-4'>
         {/* disasble both buttons if processing session init */}
         <Button
-          disabled={true}
+          disabled={false}
           displayText='Clear'
           handleClick={handlePinClear}
           isDestructive
