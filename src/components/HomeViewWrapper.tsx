@@ -8,7 +8,7 @@ export const HomeViewWrapper: React.FC<HomeViewWrapperProps> = ({
   children,
 }) => {
   return (
-    <div className='flex flex-col w-3/5 min-w-72 p-12 gap-8 bg-purple-50'>
+    <div className='flex flex-col w-3/5 min-w-72 p-12 gap-8 bg-purple-50 rounded'>
       {children}
     </div>
   );

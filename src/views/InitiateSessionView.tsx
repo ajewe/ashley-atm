@@ -61,7 +61,7 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({
 
   return (
     // TODO : screen reader?
-    <div className='flex flex-col items-center w-3/5 min-w-72 py-12 gap-8 bg-purple-50'>
+    <div className='flex flex-col items-center w-3/5 min-w-72 py-12 gap-8 bg-purple-50 rounded'>
       <div className='h-24 w-1/2 flex bg-slate-200 min-w-60'>
         {pin.split('').map((char, i) => {
           return (

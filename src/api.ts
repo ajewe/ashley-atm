@@ -23,6 +23,12 @@ export const validateSession = async (pin: string): Promise<any> => {
   return await postRequest('http://localhost:3000/accounts', { pin });
 };
 
+export const fetchAccountBalance = async (pin: string): Promise<any> => {
+  return await postRequest('http://localhost:3000/accounts/balance', {
+    pin,
+  });
+};
+
 export const sendDeposit = async (
   pin: string,
   amount: number

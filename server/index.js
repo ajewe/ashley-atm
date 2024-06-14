@@ -58,6 +58,22 @@ app.post('/accounts', (req, res) => {
   return;
 });
 
+app.post('/accounts/balance', (req, res) => {
+  const reqBody = req.body;
+  const sessionAccount = accounts.find((account) => account.id === reqBody.pin);
+
+  if (sessionAccount) {
+    res.status(200).send({
+      message: 'Balance fetched!',
+      accountBalance: sessionAccount.accountBalance,
+    });
+    return;
+  }
+
+  res.status(400).send({ message: 'Account not found!' });
+  return;
+});
+
 app.post('/accounts/deposit', (req, res) => {
   const reqBody = req.body;
   const sessionAccount = accounts.find((account) => account.id === reqBody.pin);
