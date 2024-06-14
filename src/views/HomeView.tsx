@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, HomeViewWrapper } from '../components';
+import { AccountBalance, Button, HomeViewWrapper } from '../components';
 
 export enum ActionType {
   VIEW_BALANCE = 'viewBalance',
@@ -8,17 +8,26 @@ export enum ActionType {
   DEPOSIT = 'deposit',
 }
 
-export const HomeView: React.FC = () => {
+type HomeViewProps = {
+  accountPin: string;
+};
+
+export const HomeView: React.FC<HomeViewProps> = ({ accountPin }) => {
   const [actionType, setActionType] = useState<ActionType | undefined>(
     undefined
   );
 
+  const handleUnsetActionType = (): void => {
+    setActionType(undefined);
+  };
+
   if (actionType === ActionType.VIEW_BALANCE) {
     return (
       <HomeViewWrapper>
-        <>
-          <div>Account Balance</div>
-        </>
+        <AccountBalance
+          handleUnsetActionType={handleUnsetActionType}
+          pin={accountPin}
+        />
       </HomeViewWrapper>
     );
   }

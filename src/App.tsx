@@ -17,7 +17,7 @@ const App: React.FC = () => {
       </div>
       <div className='container flex flex-col justify-center items-center mx-auto h-full'>
         {accountPin ? (
-          <HomeView />
+          <HomeView accountPin={accountPin} />
         ) : (
           <InitiateSessionView handleAccountPin={handleAccountPin} />
         )}
