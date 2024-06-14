@@ -6,7 +6,7 @@ const App: React.FC = () => {
   const [accountPin, setAccountPin] = useState<string>('');
 
   return (
-    <div className='h-screen'>
+    <div className='h-screen bg-gray-900'>
       <div className='w-full flex justify-between p-4 bg-gray-200'>
         <div>ATM</div>
         <div>Inactivate</div>
