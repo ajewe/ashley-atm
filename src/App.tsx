@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { InitiateSessionView } from './views';
+
 const App: React.FC = () => {
   const [accountPin, setAccountPin] = useState<string>('');
 
@@ -10,8 +12,7 @@ const App: React.FC = () => {
         <div>Inactivate</div>
       </div>
       <div className='container flex flex-col justify-center items-center bg-green-300 mx-auto h-full'>
-        Start!
-        {accountPin ? <div>Has account pin!</div> : <div>No account pin!</div>}
+        {accountPin ? <div>Has account pin!</div> : <InitiateSessionView />}
       </div>
     </div>
   );
