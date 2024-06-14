@@ -11,7 +11,7 @@ const App: React.FC = () => {
         <div>ATM</div>
         <div>Inactivate</div>
       </div>
-      <div className='container flex flex-col justify-center items-center bg-green-300 mx-auto h-full'>
+      <div className='container flex flex-col justify-center items-center mx-auto h-full'>
         {accountPin ? <div>Has account pin!</div> : <InitiateSessionView />}
       </div>
     </div>
