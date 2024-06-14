@@ -3,9 +3,13 @@ import { Button, PinCharacter } from '../components';
 
 import asteriskIcon from '../assets/asterisk.svg';
 
-type InitiateSessionViewProps = {};
+type InitiateSessionViewProps = {
+  handleAccountPin: (accountPin: string) => void;
+};
 
-export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
+export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({
+  handleAccountPin,
+}) => {
   const [pin, setPin] = useState<string>('');
 
   const handlePinClear = (): void => {
@@ -55,7 +59,7 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
         {pin.length < 4 ? <PinCharacter>_</PinCharacter> : null}
       </div>
       <div className='w-full flex p-4'>
-        {/* disasble both buttons if processing session init */}
+        {/* disasble both buttons if processing session init, disable Submit if not valid 4 digit pin */}
         <Button
           disabled={false}
           displayText='Clear'
@@ -65,7 +69,7 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
         <Button
           disabled={false}
           displayText='Submit'
-          handleClick={() => console.log('Submit!')}
+          handleClick={() => handleAccountPin(pin)}
         />
       </div>
     </div>

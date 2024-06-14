@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={`flex-grow ${
-        isDestructive ? 'bg-red-200' : 'bg-green-200'
+        isDestructive ? 'bg-red-400' : 'bg-green-400'
       } p-4 rounded ${disabled ? 'disabled cursor-not-allowed' : ''}`}
       type='button'
       onClick={handleClick}
