@@ -5,5 +5,9 @@ type PinCharacterProps = {
 };
 
 export const PinCharacter: React.FC<PinCharacterProps> = ({ children }) => {
-  return <div className='w-1/4 text-center'>{children}</div>;
+  return (
+    <div className='flex justify-center items-center w-1/4 text-center'>
+      {children}
+    </div>
+  );
 };

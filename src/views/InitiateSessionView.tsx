@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, PinCharacter } from '../components';
 
 type InitiateSessionViewProps = {};
@@ -6,7 +6,36 @@ type InitiateSessionViewProps = {};
 export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
   const [pin, setPin] = useState<string>('');
 
-  // add document listener
+  const handlePinClear = (): void => {
+    setPin('');
+  };
+
+  useEffect(() => {
+    const handleKeyDownEvent = (event: KeyboardEvent) => {
+      const eventKey = event.key;
+
+      if (Number(eventKey)) {
+        setPin((prevState) =>
+          prevState.length < 4 ? (prevState += eventKey) : prevState
+        );
+      }
+
+      if (eventKey === 'Backspace' || eventKey === 'Delete') {
+        setPin((prevState) => {
+          const prevStateArr = prevState.split('');
+
+          prevStateArr.pop();
+          return prevStateArr.join('');
+        });
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDownEvent);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDownEvent);
+    };
+  }, []);
 
   return (
     // TODO : screen reader?
@@ -15,15 +44,22 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({}) => {
         {pin.split('').map((char, i) => {
           return <PinCharacter key={`pin-${char}-${i}`}>*</PinCharacter>;
         })}
-        {pin.length < 4 ? <PinCharacter>_</PinCharacter> : null}
+        {pin.length < 4 ? (
+          <PinCharacter>
+            <div className='text-6xl'>_</div>
+          </PinCharacter>
+        ) : null}
       </div>
       <div className='w-full flex p-4'>
+        {/* disasble both buttons if processing session init */}
         <Button
+          disabled={true}
           displayText='Clear'
-          handleClick={() => console.log('Clear!')}
+          handleClick={handlePinClear}
           isDestructive
         />
         <Button
+          disabled={false}
           displayText='Submit'
           handleClick={() => console.log('Submit!')}
         />
