@@ -5,3 +5,7 @@
 :root {
   background-color: #242424;
 }
+
+#root {
+  height: 100vh;
+}
