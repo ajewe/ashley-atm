@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { HomeView, InitiateSessionView } from './views';
 
 const App: React.FC = () => {
-  const [accountPin, setAccountPin] = useState<string>('1');
+  const [accountPin, setAccountPin] = useState<string>('');
 
   const handleAccountPin = (newPin: string): void => {
     setAccountPin(newPin);
