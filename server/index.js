@@ -7,6 +7,10 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
+const formatNumber = (number) => {
+  return Number(Number(number).toFixed(2));
+};
+
 const accounts = [
   {
     accountBalance: 40.0,
@@ -72,7 +76,7 @@ app.post('/accounts/deposit', (req, res) => {
     return;
   }
 
-  sessionAccount.accountBalance += reqBody.amount;
+  sessionAccount.accountBalance += formatNumber(reqBody.amount);
 
   res.status(200).send({
     message: `Deposited $${reqBody.amount}!`,
@@ -113,9 +117,9 @@ app.post('/accounts/withdraw', (req, res) => {
     return;
   }
 
-  sessionAccount.accountBalance -= reqBody.amount;
+  sessionAccount.accountBalance -= formatNumber(reqBody.amount);
   sessionAccount.withdrawHistory.unshift({
-    amount: Number(reqBody.amount),
+    amount: reqBody.amount,
     date: new Date().toString(),
   });
 
