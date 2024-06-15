@@ -37,12 +37,13 @@ const App: React.FC = () => {
     message: string,
     type: NotificationType
   ): void => {
-    // TODO - setTimeout
     setNotification({
       isOpen: true,
       message,
       type,
     });
+
+    setTimeout(handleNotificationClose, 2000);
   };
 
   return (
