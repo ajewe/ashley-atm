@@ -35,6 +35,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
     return (
       <HomeViewWrapper>
         <AccountBalance
+          handleShowNotification={handleShowNotification}
           handleUnsetActionType={handleUnsetActionType}
           pin={accountPin}
         />

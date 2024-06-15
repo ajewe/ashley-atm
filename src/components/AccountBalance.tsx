@@ -3,34 +3,35 @@ import { useEffect, useState } from 'react';
 import { Button } from './Button';
 import { fetchAccountBalance } from '../api';
 
+import { NotificationType } from '../App';
+
 type AccountBalanceProps = {
+  handleShowNotification: (message: string, type: NotificationType) => void;
   handleUnsetActionType: () => void;
   pin: string;
 };
 
 export const AccountBalance: React.FC<AccountBalanceProps> = ({
+  handleShowNotification,
   handleUnsetActionType,
   pin,
 }) => {
   const [accountBalance, setAccountBalance] = useState<number | undefined>();
 
   useEffect(() => {
-    // fetch on mount
     fetchAccountBalance(pin)
       .then((res) => {
-        console.log(res);
         setAccountBalance(res.accountBalance);
-        // TODO noti?
+        handleShowNotification(res.message, NotificationType.SUCCESS);
       })
       .catch((err) => {
-        console.log('err', err.message);
-        // TODO - set a noti
-        // TODO - just nav back if err
+        handleShowNotification(err.message, NotificationType.ERROR);
+        handleUnsetActionType();
       });
   }, []);
   return (
     <>
-      <div>Account Balance: {accountBalance}</div>
+      <h1 className='text-2xl'>Account Balance: ${accountBalance}</h1>
       <Button displayText='Back' handleClick={handleUnsetActionType} />
     </>
   );
