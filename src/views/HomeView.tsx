@@ -48,6 +48,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <AccountAction
           handleShowNotification={handleShowNotification}
           handleUnsetActionType={handleUnsetActionType}
+          helperText='3K Daily Limit'
           pin={accountPin}
           type={ActionType.WITHDRAW}
         />

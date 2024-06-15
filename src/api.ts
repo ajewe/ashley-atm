@@ -32,7 +32,7 @@ export const fetchAccountBalance = async (pin: string): Promise<any> => {
 };
 
 export const updateBalance = async (
-  amount: string, // TODO - make number add validator
+  amount: number,
   pin: string,
   updateType: ActionType.DEPOSIT | ActionType.WITHDRAW
 ): Promise<any> => {

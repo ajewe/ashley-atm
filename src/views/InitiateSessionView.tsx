@@ -75,7 +75,7 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({
         })}
         {pin.length < 4 ? <PinCharacter>_</PinCharacter> : null}
       </div>
-      <div className='w-full flex p-4'>
+      <div className='w-full flex p-4 gap-3'>
         {/* disasble both buttons if processing session init, disable Submit if not valid 4 digit pin */}
         <Button
           disabled={false}

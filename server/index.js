@@ -72,7 +72,7 @@ app.post('/accounts/deposit', (req, res) => {
     return;
   }
 
-  sessionAccount.accountBalance += Number(reqBody.amount);
+  sessionAccount.accountBalance += reqBody.amount;
 
   res.status(200).send({
     message: `Deposited $${reqBody.amount}!`,
@@ -103,22 +103,23 @@ app.post('/accounts/withdraw', (req, res) => {
     0
   );
 
-  if (dailyWithdrawalAmount + Number(reqBody.amount) > 3000) {
+  if (dailyWithdrawalAmount + reqBody.amount > 3000) {
     res.status(400).send({ message: 'Amount exceeds daily limit!' });
     return;
   }
 
-  if (sessionAccount.accountBalance < Number(reqBody.amount)) {
+  if (sessionAccount.accountBalance < reqBody.amount) {
     res.status(400).send({ message: 'Amount exceeds your balance!' });
     return;
   }
 
-  // TODO number here hope to be temp
-  sessionAccount.accountBalance -= Number(reqBody.amount);
+  sessionAccount.accountBalance -= reqBody.amount;
   sessionAccount.withdrawHistory.unshift({
     amount: Number(reqBody.amount),
     date: new Date().toString(),
   });
+
+  console.log(sessionAccount);
 
   res.status(200).send({
     message: `Withdrew $${reqBody.amount}!`,
