@@ -1,4 +1,6 @@
-import { ActionType } from './views';
+import { ActionType } from './types';
+
+const baseUrl = 'http://localhost:3000/accounts';
 
 const postRequest = async (
   url: string,
@@ -22,11 +24,11 @@ const postRequest = async (
 };
 
 export const validateSession = async (pin: string): Promise<any> => {
-  return await postRequest('http://localhost:3000/accounts', { pin });
+  return await postRequest(baseUrl, { pin });
 };
 
 export const fetchAccountBalance = async (pin: string): Promise<any> => {
-  return await postRequest('http://localhost:3000/accounts/balance', {
+  return await postRequest(`${baseUrl}/balance`, {
     pin,
   });
 };
@@ -36,7 +38,7 @@ export const updateBalance = async (
   pin: string,
   updateType: ActionType.DEPOSIT | ActionType.WITHDRAW
 ): Promise<any> => {
-  return await postRequest(`http://localhost:3000/accounts/${updateType}`, {
+  return await postRequest(`${baseUrl}/${updateType}`, {
     pin,
     amount,
   });

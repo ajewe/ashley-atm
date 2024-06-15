@@ -1,22 +1,12 @@
 import { useState } from 'react';
 
+import { HeaderBanner, Notification } from './components';
+import { NotificationData, NotificationType } from './types';
 import { HomeView, InitiateSessionView } from './views';
-
-// TODO - put in types file
-type Notification = {
-  isOpen: boolean;
-  message: string;
-  type: NotificationType | undefined;
-};
-
-export enum NotificationType {
-  ERROR = 'error',
-  SUCCESS = 'success',
-}
 
 const App: React.FC = () => {
   const [accountPin, setAccountPin] = useState<string>('');
-  const [notification, setNotification] = useState<Notification>({
+  const [noti, setNoti] = useState<NotificationData>({
     isOpen: false,
     message: '',
     type: undefined,
@@ -25,47 +15,36 @@ const App: React.FC = () => {
   const handleAccountPin = (newPin: string): void => {
     setAccountPin(newPin);
   };
-  const handleNotificationClose = (): void => {
-    setNotification((prevState) => {
-      return {
-        ...prevState,
-        isOpen: false,
-      };
+  const handleClearNotification = (): void => {
+    setNoti({
+      isOpen: false,
+      message: '',
+      type: undefined,
     });
   };
   const handleShowNotification = (
     message: string,
     type: NotificationType
   ): void => {
-    setNotification({
+    setNoti({
       isOpen: true,
       message,
       type,
     });
 
-    setTimeout(handleNotificationClose, 2000);
+    setTimeout(handleClearNotification, 2000);
   };
 
   return (
-    <div className='h-screen bg-gray-900'>
-      <div className='w-full flex justify-between p-4 bg-gray-200'>
-        <div>ATM</div>
-        <button onClick={() => handleAccountPin('')}>Inactivate</button>
-      </div>
-
-      {notification.isOpen ? (
-        <div
-          className={`w-full flex justify-between ${
-            notification.type === NotificationType.ERROR
-              ? 'bg-red-500'
-              : 'bg-green-500'
-          } px-4 py-1`}
-        >
-          <span className='inline-block'>{notification.message}</span>
-          <button onClick={handleNotificationClose}>X</button>
-        </div>
+    <div className='h-screen bg-violet-950 font-mono'>
+      <HeaderBanner handleEndSession={() => handleAccountPin('')} />
+      {noti.isOpen ? (
+        <Notification
+          handleClearNotification={handleClearNotification}
+          message={noti.message}
+          type={noti.type as NotificationType}
+        />
       ) : null}
-
       <div className='container flex flex-col justify-center items-center mx-auto h-full'>
         {accountPin ? (
           <HomeView

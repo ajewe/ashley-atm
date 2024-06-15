@@ -43,11 +43,17 @@ app.post('/accounts', (req, res) => {
   const sessionAccount = accounts.find((account) => account.id === reqBody.pin);
 
   if (sessionAccount) {
-    res.status(200).send({ message: 'Session Initiated!' });
+    setTimeout(
+      () => res.status(200).send({ message: 'Session Initiated!' }),
+      3000
+    );
     return;
   }
 
-  res.status(400).send({ message: 'Account not found!' });
+  setTimeout(
+    () => res.status(400).send({ message: 'Account not found!' }),
+    3000
+  );
   return;
 });
 
@@ -56,14 +62,20 @@ app.post('/accounts/balance', (req, res) => {
   const sessionAccount = accounts.find((account) => account.id === reqBody.pin);
 
   if (sessionAccount) {
-    res.status(200).send({
-      message: 'Balance fetched!',
-      accountBalance: sessionAccount.accountBalance,
-    });
+    setTimeout(() => {
+      res.status(200).send({
+        message: 'Balance fetched!',
+        accountBalance: sessionAccount.accountBalance,
+      });
+    }, 3000);
+
     return;
   }
 
-  res.status(400).send({ message: 'Account not found!' });
+  setTimeout(
+    () => res.status(400).send({ message: 'Account not found!' }),
+    3000
+  );
   return;
 });
 
@@ -72,16 +84,22 @@ app.post('/accounts/deposit', (req, res) => {
   const sessionAccount = accounts.find((account) => account.id === reqBody.pin);
 
   if (!sessionAccount) {
-    res.status(400).send({ message: 'Account not found!' });
+    setTimeout(
+      () => res.status(400).send({ message: 'Account not found!' }),
+      3000
+    );
     return;
   }
 
   sessionAccount.accountBalance += formatNumber(reqBody.amount);
 
-  res.status(200).send({
-    message: `Deposited $${reqBody.amount}!`,
-    accountBalance: sessionAccount.accountBalance,
-  });
+  setTimeout(() => {
+    res.status(200).send({
+      message: `Deposited $${reqBody.amount}!`,
+      accountBalance: sessionAccount.accountBalance,
+    });
+  }, 3000);
+
   return;
 });
 
@@ -90,7 +108,10 @@ app.post('/accounts/withdraw', (req, res) => {
   const sessionAccount = accounts.find((account) => account.id === reqBody.pin);
 
   if (!sessionAccount) {
-    res.status(400).send({ message: 'Account not found!' });
+    setTimeout(() => {
+      res.status(400).send({ message: 'Account not found!' });
+    }, 3000);
+
     return;
   }
 
@@ -108,12 +129,18 @@ app.post('/accounts/withdraw', (req, res) => {
   );
 
   if (dailyWithdrawalAmount + reqBody.amount > 3000) {
-    res.status(400).send({ message: 'Amount exceeds daily limit!' });
+    setTimeout(
+      () => res.status(400).send({ message: 'Amount exceeds daily limit!' }),
+      3000
+    );
     return;
   }
 
   if (sessionAccount.accountBalance < reqBody.amount) {
-    res.status(400).send({ message: 'Amount exceeds your balance!' });
+    setTimeout(
+      () => res.status(400).send({ message: 'Amount exceeds your balance!' }),
+      3000
+    );
     return;
   }
 
@@ -125,10 +152,14 @@ app.post('/accounts/withdraw', (req, res) => {
 
   console.log(sessionAccount);
 
-  res.status(200).send({
-    message: `Withdrew $${reqBody.amount}!`,
-    accountBalance: sessionAccount.accountBalance,
-  });
+  setTimeout(
+    () =>
+      res.status(200).send({
+        message: `Withdrew $${reqBody.amount}!`,
+        accountBalance: sessionAccount.accountBalance,
+      }),
+    3000
+  );
   return;
 });
 

@@ -1,18 +1,12 @@
 import { useState } from 'react';
 
-import { NotificationType } from '../App';
+import { ActionType, NotificationType } from '../types';
 import {
   AccountAction,
   AccountBalance,
   Button,
   HomeViewWrapper,
 } from '../components';
-
-export enum ActionType {
-  VIEW_BALANCE = 'viewBalance',
-  WITHDRAW = 'withdraw',
-  DEPOSIT = 'deposit',
-}
 
 type HomeViewProps = {
   accountPin: string;
@@ -72,26 +66,26 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <HomeViewWrapper>
       <Button
-        displayText='View Account Balance'
         handleClick={() => {
           setActionType(ActionType.VIEW_BALANCE);
-          console.log('view account balance');
         }}
-      />
+      >
+        View Account Balance
+      </Button>
       <Button
-        displayText='Withdraw'
         handleClick={() => {
           setActionType(ActionType.WITHDRAW);
-          console.log('withdraw');
         }}
-      />
+      >
+        Withdraw
+      </Button>
       <Button
-        displayText='Deposit'
         handleClick={() => {
           setActionType(ActionType.DEPOSIT);
-          console.log('deposit');
         }}
-      />
+      >
+        Deposit
+      </Button>
     </HomeViewWrapper>
   );
 };

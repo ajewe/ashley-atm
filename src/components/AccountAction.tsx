@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
 import { updateBalance } from '../api';
-import { ActionType } from '../views';
+import { ActionType, NotificationType } from '../types';
 import { Button } from './Button';
-
-import { NotificationType } from '../App';
+import { Spinner } from './Spinner';
 
 type AccountActionProps = {
   handleShowNotification: (message: string, type: NotificationType) => void;
@@ -22,6 +21,7 @@ export const AccountAction: React.FC<AccountActionProps> = ({
   type,
 }) => {
   const [input, setInput] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleOnChange = (value: string): void => {
     if (Number(value) || value === '') {
@@ -31,14 +31,19 @@ export const AccountAction: React.FC<AccountActionProps> = ({
 
   const handleBalanceUpdate = async (): Promise<void> => {
     if (input) {
+      setIsLoading(true);
       const formattedAmount = Number(input).toFixed(2);
 
       updateBalance(Number(formattedAmount), pin, type)
         .then((res) => {
+          const successString = `${res.message} New Account Balance: $${res.accountBalance}.`;
+
+          setIsLoading(false);
           handleUnsetActionType();
-          handleShowNotification(res.message, NotificationType.SUCCESS);
+          handleShowNotification(successString, NotificationType.SUCCESS);
         })
         .catch((err) => {
+          setIsLoading(false);
           handleShowNotification(err.message, NotificationType.ERROR);
         });
     }
@@ -60,16 +65,15 @@ export const AccountAction: React.FC<AccountActionProps> = ({
       />
       {helperText ? <span className='self-end'>{helperText}</span> : null}
       <div className='w-full flex p-4 gap-3'>
+        <Button handleClick={handleUnsetActionType} isDestructive={true}>
+          Cancel
+        </Button>
         <Button
-          displayText='Cancel'
-          handleClick={handleUnsetActionType}
-          isDestructive={true}
-        />
-        <Button
-          disabled={!input}
-          displayText='Submit'
+          disabled={!input || isLoading}
           handleClick={handleBalanceUpdate}
-        />
+        >
+          {isLoading ? <Spinner /> : 'Submit'}
+        </Button>
       </div>
     </div>
   );
