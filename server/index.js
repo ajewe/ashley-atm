@@ -1,3 +1,4 @@
+const { isToday } = require('date-fns');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -14,36 +15,24 @@ const accounts = [
       {
         amount: 5.0,
         date: 'Tue Jul 04 2023 13:04:35 GMT-0500 (Central Daylight Time)',
-        type: 'withdrawal',
       },
       {
         amount: 15.45,
         date: 'Tue May 14 2019 09:21:35 GMT-0500 (Central Daylight Time)',
-        type: 'withdraw',
       },
     ],
   },
   {
-    accountBalance: 40.0,
+    accountBalance: 10000.0,
     id: '2345',
     withdrawHistory: [
       {
         amount: 5.0,
-        date: 'Tue Jul 04 2023 13:04:35 GMT-0500 (Central Daylight Time)',
-        type: 'withdrawal',
-      },
-      {
-        amount: 15.45,
-        date: 'Tue May 14 2019 09:21:35 GMT-0500 (Central Daylight Time)',
-        type: 'withdraw',
+        date: 'Wed Jun 12 2024 09:30:21 GMT-0500 (Central Daylight Time)',
       },
     ],
   },
 ];
-
-app.get('/', (req, res) => {
-  res.send({ msg: 'Hello World!' });
-});
 
 app.post('/accounts', (req, res) => {
   const reqBody = req.body;
@@ -83,7 +72,7 @@ app.post('/accounts/deposit', (req, res) => {
     return;
   }
 
-  sessionAccount.accountBalance += reqBody.amount;
+  sessionAccount.accountBalance += Number(reqBody.amount);
 
   res.status(200).send({
     message: `Deposited $${reqBody.amount}!`,
@@ -101,10 +90,35 @@ app.post('/accounts/withdraw', (req, res) => {
     return;
   }
 
-  // TODO - need to check daily withdraw limit
-  sessionAccount.accountBalance -= reqBody.amount;
+  const dailyWithdrawalAmount = sessionAccount.withdrawHistory.reduce(
+    (amountSum, currentValue) => {
+      const currentDate = new Date(currentValue.date);
 
-  // TODO - if exceeds daily, res.status error
+      if (isToday(currentDate)) {
+        return (amountSum += currentValue.amount);
+      }
+
+      return amountSum;
+    },
+    0
+  );
+
+  if (dailyWithdrawalAmount + Number(reqBody.amount) > 3000) {
+    res.status(400).send({ message: 'Amount exceeds daily limit!' });
+    return;
+  }
+
+  if (sessionAccount.accountBalance < Number(reqBody.amount)) {
+    res.status(400).send({ message: 'Amount exceeds your balance!' });
+    return;
+  }
+
+  // TODO number here hope to be temp
+  sessionAccount.accountBalance -= Number(reqBody.amount);
+  sessionAccount.withdrawHistory.unshift({
+    amount: Number(reqBody.amount),
+    date: new Date().toString(),
+  });
 
   res.status(200).send({
     message: `Withdrew $${reqBody.amount}!`,
