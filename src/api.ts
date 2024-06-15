@@ -1,3 +1,5 @@
+import { ActionType } from './views';
+
 const postRequest = async (
   url: string,
   reqBody: Record<any, any>
@@ -29,21 +31,12 @@ export const fetchAccountBalance = async (pin: string): Promise<any> => {
   });
 };
 
-export const sendDeposit = async (
+export const updateBalance = async (
+  amount: string, // TODO - make number add validator
   pin: string,
-  amount: number
+  updateType: ActionType.DEPOSIT | ActionType.WITHDRAW
 ): Promise<any> => {
-  return await postRequest('http://localhost:3000/accounts/deposit', {
-    pin,
-    amount,
-  });
-};
-
-export const sendWithdrawal = async (
-  pin: string,
-  amount: number
-): Promise<any> => {
-  return await postRequest('http://localhost:3000/accounts/withdraw', {
+  return await postRequest(`http://localhost:3000/accounts/${updateType}`, {
     pin,
     amount,
   });
