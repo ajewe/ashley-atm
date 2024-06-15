@@ -1,6 +1,12 @@
 import { useState } from 'react';
 
-import { AccountBalance, Button, HomeViewWrapper } from '../components';
+import { NotificationType } from '../App';
+import {
+  AccountAction,
+  AccountBalance,
+  Button,
+  HomeViewWrapper,
+} from '../components';
 
 export enum ActionType {
   VIEW_BALANCE = 'viewBalance',
@@ -10,9 +16,13 @@ export enum ActionType {
 
 type HomeViewProps = {
   accountPin: string;
+  handleShowNotification: (message: string, type: NotificationType) => void;
 };
 
-export const HomeView: React.FC<HomeViewProps> = ({ accountPin }) => {
+export const HomeView: React.FC<HomeViewProps> = ({
+  accountPin,
+  handleShowNotification,
+}) => {
   const [actionType, setActionType] = useState<ActionType | undefined>(
     undefined
   );
@@ -35,18 +45,24 @@ export const HomeView: React.FC<HomeViewProps> = ({ accountPin }) => {
   if (actionType === ActionType.WITHDRAW) {
     return (
       <HomeViewWrapper>
-        <>
-          <div>Withdraw</div>
-        </>
+        <AccountAction
+          handleShowNotification={handleShowNotification}
+          handleUnsetActionType={handleUnsetActionType}
+          pin={accountPin}
+          type={ActionType.WITHDRAW}
+        />
       </HomeViewWrapper>
     );
   }
   if (actionType === ActionType.DEPOSIT) {
     return (
       <HomeViewWrapper>
-        <>
-          <div>Deposit</div>
-        </>
+        <AccountAction
+          handleShowNotification={handleShowNotification}
+          handleUnsetActionType={handleUnsetActionType}
+          pin={accountPin}
+          type={ActionType.DEPOSIT}
+        />
       </HomeViewWrapper>
     );
   }

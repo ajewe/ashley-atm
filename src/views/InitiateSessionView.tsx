@@ -3,15 +3,19 @@ import { validateSession } from '../api';
 import { Button, PinCharacter } from '../components';
 
 import asteriskIcon from '../assets/asterisk.svg';
+import { NotificationType } from '../App';
 
 type InitiateSessionViewProps = {
   handleAccountPin: (accountPin: string) => void;
+  handleShowNotification: (message: string, type: NotificationType) => void;
 };
 
 export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({
   handleAccountPin,
+  handleShowNotification,
 }) => {
   const [pin, setPin] = useState<string>('');
+  // TODO - is loading
 
   const handlePinClear = (): void => {
     setPin('');
@@ -21,11 +25,10 @@ export const InitiateSessionView: React.FC<InitiateSessionViewProps> = ({
     validateSession(pin)
       .then((res) => {
         handleAccountPin(pin);
-        // TODO noti?
+        handleShowNotification(res.message, NotificationType.SUCCESS);
       })
       .catch((err) => {
-        console.log('err', err.message);
-        // TODO - set a noti
+        handleShowNotification(err.message, NotificationType.ERROR);
         handlePinClear();
       });
   };
